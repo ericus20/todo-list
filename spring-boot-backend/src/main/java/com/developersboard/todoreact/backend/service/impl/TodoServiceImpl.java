@@ -25,6 +25,11 @@ public class TodoServiceImpl implements TodoService {
   }
 
   @Override
+  public Iterable<Todo> saveOrUpdateAll(Iterable<Todo> todos) {
+    return todoRepository.saveAll(todos);
+  }
+
+  @Override
   public Iterable<Todo> getAllTodoItems() {
     return todoRepository.findAll();
   }

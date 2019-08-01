@@ -33,7 +33,12 @@ public class Todo implements Serializable {
   private boolean completed;
 
   public Todo(String name, LocalDate dueDate) {
+    this(name, dueDate, false);
+  }
+
+  public Todo(String name, LocalDate dueDate, boolean completed) {
     this.name = name;
     this.dueDate = dueDate;
+    this.completed = completed;
   }
 }

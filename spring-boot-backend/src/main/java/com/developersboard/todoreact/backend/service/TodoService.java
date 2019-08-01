@@ -9,6 +9,8 @@ public interface TodoService {
 
   Todo saveOrUpdate(Todo todo);
 
+  Iterable<Todo> saveOrUpdateAll(Iterable<Todo> todos);
+
   Iterable<Todo> getAllTodoItems();
 
   Todo getTodoById(Long id);
