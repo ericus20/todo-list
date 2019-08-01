@@ -1,5 +1,6 @@
 plugins {
     id 'org.springframework.boot' version '2.1.6.RELEASE'
+    id 'checkstyle'
     id 'eclipse'
     id 'java'
     id 'idea'
@@ -40,4 +41,17 @@ dependencies {
 
 wrapper {
     gradleVersion = '5.5.1'
+}
+
+// Checkstyle task to disable xml reports and load config file
+tasks.withType(Checkstyle) {
+    configFile file("${project.rootDir}/config/checkstyle.xml")
+    include '**/*.java'
+    exclude '**/gen/**'
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+
+    classpath = files()
 }

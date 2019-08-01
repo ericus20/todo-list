@@ -36,6 +36,12 @@ public class TodoResource {
     return todoService.getAllTodoItems();
   }
 
+  /**
+   * Retrieve todo item from database that matches the given id.
+   *
+   * @param id id
+   * @return todo
+   */
   @GetMapping(path = {"/{id}"})
   public ResponseEntity<Todo> getTodoById(@PathVariable Long id) {
     Todo todoById = todoService.getTodoById(id);
@@ -45,6 +51,12 @@ public class TodoResource {
     return ResponseEntity.ok(todoById);
   }
 
+  /**
+   * Create and persist a new todo item to the database.
+   *
+   * @param todo todo
+   * @return persisted todo
+   */
   @PostMapping
   public ResponseEntity<Todo> createTodo(@RequestBody Todo todo) {
     Todo savedTodo = todoService.saveOrUpdate(todo);
@@ -62,6 +74,12 @@ public class TodoResource {
     return ResponseEntity.created(location).build();
   }
 
+  /**
+   * Updates a todo object in the database.
+   *
+   * @param todo todo
+   * @return updated todo
+   */
   @PutMapping
   public ResponseEntity<Todo> updateTodo(@RequestBody Todo todo) {
     Todo updatedTodo = todoService.saveOrUpdate(todo);
@@ -71,10 +89,15 @@ public class TodoResource {
     return ResponseEntity.ok(updatedTodo);
   }
 
+  /**
+   * Delete todo item that matches the given id from the database.
+   *
+   * @param id id
+   * @return ok status
+   */
   @DeleteMapping(path = {"/{id}"})
   public ResponseEntity<Todo> deleteTodo(@PathVariable Long id) {
     todoService.deleteTodoById(id);
     return ResponseEntity.ok().build();
   }
-
 }

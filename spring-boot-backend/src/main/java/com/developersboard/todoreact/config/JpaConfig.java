@@ -15,6 +15,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableTransactionManagement
 @EntityScan(basePackages = "com.developersboard.todoreact.backend.persistence.domain")
-@EnableJpaRepositories(basePackages = "com.developersboard.todoreact.backend.persistence.repository")
+@EnableJpaRepositories("com.developersboard.todoreact.backend.persistence.repository")
 public class JpaConfig {
 }
