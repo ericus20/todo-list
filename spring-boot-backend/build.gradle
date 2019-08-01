@@ -1,9 +1,13 @@
+import com.github.spotbugs.SpotBugsTask
+
 plugins {
     id 'org.springframework.boot' version '2.1.6.RELEASE'
+    id 'com.github.spotbugs' version '1.6.9'
     id 'checkstyle'
     id 'eclipse'
     id 'java'
     id 'idea'
+    id 'pmd'
 }
 
 apply plugin: 'io.spring.dependency-management'
@@ -54,4 +58,39 @@ tasks.withType(Checkstyle) {
     }
 
     classpath = files()
+}
+
+spotbugs {
+    toolVersion = '3.1.12'
+    sourceSets = [sourceSets.main]
+    ignoreFailures = false
+    effort = "max"
+    showProgress = true
+    reportLevel = "high"
+    visitors = ["FindSqlInjection", "SwitchFallthrough"]
+    omitVisitors = ["FindNonShortCircuit"]
+    includeFilter = file("$rootProject.projectDir/config/spotbugs.xml")
+}
+
+tasks.withType(SpotBugsTask) {
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+}
+
+pmd {
+    ignoreFailures = false
+    toolVersion = '6.17.0'
+    sourceSets = [sourceSets.main, sourceSets.test]
+    reportsDir = file("$project.buildDir/pmdReports")
+    ruleSetFiles = files("$rootProject.projectDir/config/pmd-ruleset.xml")
+    ruleSets = []
+}
+
+tasks.withType(Pmd) {
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
 }
