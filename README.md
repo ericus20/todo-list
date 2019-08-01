@@ -7,6 +7,7 @@ Todo List Full Stack App with Spring Boot and React
 * [Bootstrap 4](http://getbootstrap.com/) - HTML, CSS, and JavaScript framework
 * [Gradle](https://gradle.org/) - Dependency Management and Build Tool
 * [React](https://reactjs.org/) - React JS
+* [Axios](https://www.npmjs.com/package/axios) - Promise based HTTP client
 * [H2](http://www.h2database.com/) - In-Memory Database for development
 
 ## Contributing
@@ -30,5 +31,5 @@ for details on our code of conduct, and the process for submitting pull requests
 * Start React application - *npm start*
 * Access application on - *http://localhost:3000/*
 
-## Running on Docker
-* Simply run - *docker-compose up* in the directory where docker-compose.yml file resides.
+## Running on Docker (Assuming docker is installed)
+* in the directory where docker-compose.yml file resides, simply run the command - **docker-compose up**
