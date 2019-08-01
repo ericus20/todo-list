@@ -29,3 +29,6 @@ for details on our code of conduct, and the process for submitting pull requests
 * Start Spring Boot application first - *./gradlew bootRun*
 * Start React application - *npm start*
 * Access application on - *http://localhost:3000/*
+
+## Running on Docker
+* Simply run - *docker-compose up* in the directory where docker-compose.yml file resides.
