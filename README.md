@@ -33,3 +33,6 @@ for details on our code of conduct, and the process for submitting pull requests
 
 ## Running on Docker (Assuming docker is installed)
 * in the directory where docker-compose.yml file resides, simply run the command - **docker-compose up**
+
+## Stop running application on Docker
+* in the directory where docker-compose.yml file resides, simply run the command - **docker-compose down**

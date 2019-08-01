@@ -9,6 +9,9 @@ COPY gradlew .
 COPY gradle gradle
 COPY build.gradle .
 
+# Set permission to execute file
+RUN chmod +x gradlew
+
 # Build all the dependencies
 RUN ./gradlew dependencies
 
