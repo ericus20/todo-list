@@ -1,0 +1,23 @@
+version: '3.7'
+
+services:
+
+  # App backend service
+  spring-boot-backend:
+    image: ericus20/spring-boot-backend
+    build:
+      context: ./spring-boot-backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    restart: always
+    
+  # React Frontend Service
+  react-frontend:
+    image: ericus20/react-frontend
+    build:
+        context: ./react-frontend
+        dockerfile: Dockerfile
+    ports:
+        - "3000:3000"
+    restart: always
