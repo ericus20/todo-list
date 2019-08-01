@@ -12,14 +12,23 @@ class AddTodoItem extends Component {
     redirectToDashboard: false
   };
 
+  /**
+   * Handle input change event on adding new todo item.
+   */
   onChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
 
+  /**
+   * Handles changes made specifically to date picker.
+   */
   handleChange = date => {
     this.setState({ dueDate: date });
   };
 
+  /**
+   * Handles form submission to create a new todo.
+   */
   onSubmit = event => {
     event.preventDefault();
 

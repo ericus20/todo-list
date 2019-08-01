@@ -11,22 +11,34 @@ class TodoListItem extends Component {
     editMode: false
   };
 
-  onInputChange = event => {
+  /**
+   * Function handles the toggling of todo completion.
+   */
+  onCheckboxCheck = event => {
     this.setState({ [event.target.name]: event.target.checked }, () => {
       this.processFetchUpdate();
     });
   };
 
+  /**
+   * Function handles the input change for todo list item in edit mode.
+   */
   onInputEditChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
 
+  /**
+   * Handles enter key pressed to update the text changed.
+   */
   onKeyDown = event => {
     if (event.key === "Enter") {
       this.processFetchUpdate();
     }
   };
 
+  /**
+   * Make Rest Call to update the todo object based on the current state.
+   */
   processFetchUpdate = () => {
     const todo = {
       id: this.state.id,
@@ -42,10 +54,16 @@ class TodoListItem extends Component {
       .catch(err => console.log("error getting todos: " + err));
   };
 
+  /**
+   * Set the internal state of the todo list item in edit mode.
+   */
   onClickEdit = event => {
     this.setState({ editMode: true });
   };
 
+  /**
+   * Handles deletion of a todo list item.
+   */
   onClickDelete = event => {
     AxiosUtil.delete("/" + this.state.id)
       .then(res => {
@@ -69,7 +87,7 @@ class TodoListItem extends Component {
             value={this.state.completed}
             name="completed"
             checked={this.state.completed}
-            onChange={this.onInputChange}
+            onChange={this.onCheckboxCheck}
           />
         </React.Fragment>
       );

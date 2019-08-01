@@ -1,13 +1,17 @@
 import React, { Component } from "react";
 import TodoListItem from "./TodoListItem";
 import AxiosUtil from "../../utils/AxiosUtil";
-// import axios from "axios";
 
 class TodoList extends Component {
   state = {
     todos: []
   };
 
+  /**
+   * Load all the todos into the state of the
+   * application from server side on mount.
+   * @param {*} props
+   */
   componentDidMount(props) {
     AxiosUtil.get("/")
       .then(res => {
@@ -16,10 +20,17 @@ class TodoList extends Component {
       .catch(err => console.log("error getting todos: " + err));
   }
 
+  /**
+   * Check to assign the appropriate label based on the due date.
+   */
   checkDueDatePassedLabel = date => {
     return new Date(date) < new Date(new Date().toDateString());
   };
 
+  /**
+   * After the removal of a todo from the server side,
+   * todo object is internally removed from the state.
+   */
   refreshListToRemove = id => {
     let todos = this.state.todos.filter(todo => todo.id !== id);
     this.setState({ todos: todos });

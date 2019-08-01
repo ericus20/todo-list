@@ -29,8 +29,11 @@ public class DatabaseSeeder implements CommandLineRunner {
   public void run(String... args) throws Exception {
     Todo todo = new Todo("Buy Milk", LocalDate.now().plusDays(2));
     Todo todo2 = new Todo("Clean House", LocalDate.now().plusDays(2));
+    Todo todo3 = new Todo("Do Research", LocalDate.now().minusDays(2));
+    todo2.setCompleted(true);
 
     todoService.saveOrUpdate(todo);
     todoService.saveOrUpdate(todo2);
+    todoService.saveOrUpdate(todo3);
   }
 }
