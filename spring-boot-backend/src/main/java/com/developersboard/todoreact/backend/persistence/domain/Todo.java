@@ -1,5 +1,7 @@
 package com.developersboard.todoreact.backend.persistence.domain;
 
+import com.developersboard.todoreact.backend.persistence.domain.base.BaseEntity;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -18,8 +20,8 @@ import lombok.ToString;
 @Entity
 @ToString
 @NoArgsConstructor
-@EqualsAndHashCode(of = {"name", "dueDate", "completed"})
-public class Todo implements Serializable {
+@EqualsAndHashCode(of = {"name", "dueDate", "completed"}, callSuper = true)
+public class Todo extends BaseEntity implements Serializable {
   private static final long serialVersionUID = -5280898519700045951L;
 
   @Id

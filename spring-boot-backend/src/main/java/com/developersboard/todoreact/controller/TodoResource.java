@@ -39,11 +39,9 @@ public class TodoResource {
   @GetMapping(path = {"/{id}"})
   public ResponseEntity<Todo> getTodoById(@PathVariable Long id) {
     Todo todoById = todoService.getTodoById(id);
-
     if (todoById == null) {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-
     return ResponseEntity.ok(todoById);
   }
 
@@ -53,12 +51,14 @@ public class TodoResource {
     if (savedTodo == null) {
       return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    // build a location to the newly created resource by expanding the existing path.
+    // request from /api/v1/todos will build to include id of new object as /api/v1/todos/3
     URI location = ServletUriComponentsBuilder
             .fromCurrentRequest()
             .path("/{id}")
             .buildAndExpand(savedTodo.getId())
             .toUri();
-
     return ResponseEntity.created(location).build();
   }
 
@@ -68,7 +68,6 @@ public class TodoResource {
     if (updatedTodo == null) {
       return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
     return ResponseEntity.ok(updatedTodo);
   }
 

@@ -8,8 +8,11 @@ import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 public class TodoServiceImpl implements TodoService {
 
   private final TodoRepository todoRepository;
@@ -20,11 +23,13 @@ public class TodoServiceImpl implements TodoService {
   }
 
   @Override
+  @Transactional
   public Todo saveOrUpdate(Todo todo) {
     return todoRepository.save(todo);
   }
 
   @Override
+  @Transactional
   public Iterable<Todo> saveOrUpdateAll(Iterable<Todo> todos) {
     return todoRepository.saveAll(todos);
   }
@@ -41,6 +46,7 @@ public class TodoServiceImpl implements TodoService {
   }
 
   @Override
+  @Transactional
   public void deleteTodoById(Long id) {
     todoRepository.deleteById(id);
   }

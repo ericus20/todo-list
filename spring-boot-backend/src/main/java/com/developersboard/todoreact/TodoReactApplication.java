@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class TodoReactApplication {
 
   public static void main(String[] args) {
-    SpringApplication.run(TodoReactApplication.class, args);
+    SpringApplication.run(TodoReactApplication.class);
   }
 
 }
