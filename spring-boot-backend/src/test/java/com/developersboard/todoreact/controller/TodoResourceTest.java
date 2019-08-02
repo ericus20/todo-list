@@ -41,6 +41,14 @@ class TodoResourceTest {
   }
 
   @Test
+  void getTodoByIdOnItemNotExists() throws Exception {
+    this.mockMvc
+            .perform(MockMvcRequestBuilders.get(BASE_URL + "/" + -1))
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(MockMvcResultMatchers.status().isNotFound());
+  }
+
+  @Test
   void createTodo(TestInfo testInfo) throws Exception {
     Todo todo = new Todo(testInfo.getDisplayName());
     String json = new Gson().toJson(todo);
@@ -53,6 +61,16 @@ class TodoResourceTest {
             .andExpect(MockMvcResultMatchers.status().isCreated())
             .andExpect(MockMvcResultMatchers.header().string("location",
                     Matchers.containsString(BASE_URL)));
+  }
+
+  @Test
+  void createTodoOnEmptyName() {
+    Todo todo = new Todo();
+    String json = new Gson().toJson(todo);
+    Assertions.assertThrows(Exception.class, () -> this.mockMvc.perform(MockMvcRequestBuilders
+            .post(BASE_URL)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(json)));
   }
 
   @Test
@@ -76,14 +94,26 @@ class TodoResourceTest {
   }
 
   @Test
+  void updateTodoOnEmptyTodo() {
+    Todo todo = new Todo();
+    String json = new Gson().toJson(todo);
+    Assertions.assertThrows(Exception.class, () -> this.mockMvc.perform(MockMvcRequestBuilders
+            .put(BASE_URL)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(json)));
+  }
+
+  @Test
   void deleteTodo() throws Exception {
     this.mockMvc
             .perform(MockMvcRequestBuilders.delete(BASE_URL + "/1"))
             .andDo(MockMvcResultHandlers.print())
             .andExpect(MockMvcResultMatchers.status().isOk());
 
-    Assertions.assertThrows(Exception.class,
-        () -> fetchTodoById(MockMvcResultMatchers.jsonPath("$.name").doesNotExist()));
+    this.mockMvc
+            .perform(MockMvcRequestBuilders.get(BASE_URL + "/" + 1))
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(MockMvcResultMatchers.status().isNotFound());
   }
 
   private void fetchTodoById(ResultMatcher exists) throws Exception {

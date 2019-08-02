@@ -4,7 +4,7 @@ import com.developersboard.todoreact.backend.persistence.domain.Todo;
 import com.developersboard.todoreact.backend.service.TodoService;
 
 import java.net.URI;
-import java.time.LocalDate;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -45,11 +45,12 @@ public class TodoResource {
    */
   @GetMapping(path = {"/{id}"})
   public ResponseEntity<Todo> getTodoById(@PathVariable Long id) {
-    Todo todoById = todoService.getTodoById(id);
-    if (todoById == null) {
+    try {
+      Todo todoById = todoService.getTodoById(id);
+      return ResponseEntity.ok(todoById);
+    } catch (NoSuchElementException e) {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-    return ResponseEntity.ok(todoById);
   }
 
   /**
@@ -60,22 +61,19 @@ public class TodoResource {
    */
   @PostMapping
   public ResponseEntity<Todo> createTodo(@RequestBody Todo todo) {
-    if (todo.getDueDate() == null) {
-      todo.setDueDate(LocalDate.now().plusDays(2));
+    try {
+      Todo savedTodo = todoService.saveOrUpdate(todo);
+      // build a location to the newly created resource by expanding the existing path.
+      // request from /api/v1/todos will build to include id of new object as /api/v1/todos/3
+      URI location = ServletUriComponentsBuilder
+              .fromCurrentRequest()
+              .path("/{id}")
+              .buildAndExpand(savedTodo.getId())
+              .toUri();
+      return ResponseEntity.created(location).build();
+    } catch (Exception e) {
+      throw new IllegalArgumentException(e);
     }
-    Todo savedTodo = todoService.saveOrUpdate(todo);
-    if (savedTodo == null) {
-      return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    // build a location to the newly created resource by expanding the existing path.
-    // request from /api/v1/todos will build to include id of new object as /api/v1/todos/3
-    URI location = ServletUriComponentsBuilder
-            .fromCurrentRequest()
-            .path("/{id}")
-            .buildAndExpand(savedTodo.getId())
-            .toUri();
-    return ResponseEntity.created(location).build();
   }
 
   /**
@@ -86,11 +84,12 @@ public class TodoResource {
    */
   @PutMapping
   public ResponseEntity<Todo> updateTodo(@RequestBody Todo todo) {
-    Todo updatedTodo = todoService.saveOrUpdate(todo);
-    if (updatedTodo == null) {
-      return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    try {
+      Todo updatedTodo = todoService.saveOrUpdate(todo);
+      return ResponseEntity.ok(updatedTodo);
+    } catch (Exception e) {
+      throw new IllegalArgumentException(e);
     }
-    return ResponseEntity.ok(updatedTodo);
   }
 
   /**

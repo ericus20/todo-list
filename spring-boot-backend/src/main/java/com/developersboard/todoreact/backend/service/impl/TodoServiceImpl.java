@@ -4,6 +4,7 @@ import com.developersboard.todoreact.backend.persistence.domain.Todo;
 import com.developersboard.todoreact.backend.persistence.repository.TodoRepository;
 import com.developersboard.todoreact.backend.service.TodoService;
 
+import java.time.LocalDate;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class TodoServiceImpl implements TodoService {
   @Override
   @Transactional
   public Todo saveOrUpdate(Todo todo) {
+    if (todo.getDueDate() == null) {
+      todo.setDueDate(LocalDate.now().plusDays(2));
+    }
     return todoRepository.save(todo);
   }
 
