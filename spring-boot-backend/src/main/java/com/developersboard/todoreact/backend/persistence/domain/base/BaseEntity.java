@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 
@@ -25,7 +24,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 @Data
 @MappedSuperclass
 @EqualsAndHashCode(of = {"version"})
-@JsonIgnoreProperties({"createdAt", "updatedAt"})
+@JsonIgnoreProperties({"createdAt", "updatedAt", "version"})
 public class BaseEntity {
 
   /**
@@ -33,7 +32,6 @@ public class BaseEntity {
    * modifications made to this entity.
    */
   @Version
-  @Column(name = "version")
   private int version;
 
   /**

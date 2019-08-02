@@ -34,6 +34,10 @@ public class Todo extends BaseEntity implements Serializable {
   private LocalDate dueDate;
   private boolean completed;
 
+  public Todo(String name) {
+    this(name, null, false);
+  }
+
   public Todo(String name, LocalDate dueDate) {
     this(name, dueDate, false);
   }

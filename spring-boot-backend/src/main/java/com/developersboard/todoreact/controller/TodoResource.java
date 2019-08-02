@@ -4,6 +4,7 @@ import com.developersboard.todoreact.backend.persistence.domain.Todo;
 import com.developersboard.todoreact.backend.service.TodoService;
 
 import java.net.URI;
+import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -59,6 +60,9 @@ public class TodoResource {
    */
   @PostMapping
   public ResponseEntity<Todo> createTodo(@RequestBody Todo todo) {
+    if (todo.getDueDate() == null) {
+      todo.setDueDate(LocalDate.now().plusDays(2));
+    }
     Todo savedTodo = todoService.saveOrUpdate(todo);
     if (savedTodo == null) {
       return new ResponseEntity<>(HttpStatus.NO_CONTENT);
