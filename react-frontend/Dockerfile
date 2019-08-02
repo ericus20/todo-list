@@ -12,4 +12,4 @@ RUN npm install --loglevel=error
 COPY ./ ./
 
 #Default command
-CMD ["npm", "run", "start"]
+CMD ["npm", "start"]
