@@ -12,4 +12,4 @@ RUN npm install --loglevel=error
 COPY ./ ./
 
 #Default command
-CMD ["npm", "start"]
+CMD ["npm", "run", "start-docker"]
