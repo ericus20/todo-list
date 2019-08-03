@@ -30,6 +30,7 @@ for details on our code of conduct, and the process for submitting pull requests
 * Start Spring Boot application first - *./gradlew bootRun*
 * Start React application - *npm start*
 * Access application on - *http://localhost:3000/*
+* Access Spring Boot Backend Restful Service on *http://localhost:8080/api/v1/todos*
 * Access in-memory database on *http://localhost:8080/h2-console*
 
 ## Running on Docker (Assuming docker is installed)
