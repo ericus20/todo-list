@@ -32,7 +32,6 @@ class TodoServiceTest {
       Assertions.assertNotNull(updatedTodo);
       Assertions.assertEquals(updatedTodo.getName(), testInfo.getDisplayName().concat("Updated"));
       Assertions.assertEquals(updatedTodo.getId(), todo.getId());
-      Assertions.assertTrue(updatedTodo.getVersion() > todo.getVersion());
     });
   }
 

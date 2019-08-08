@@ -20,7 +20,7 @@ import lombok.ToString;
 @Entity
 @ToString
 @NoArgsConstructor
-@EqualsAndHashCode(of = {"name", "dueDate", "completed"}, callSuper = true)
+@EqualsAndHashCode(of = {"name", "dueDate", "completed"}, callSuper = false)
 public class Todo extends BaseEntity implements Serializable {
   private static final long serialVersionUID = -5280898519700045951L;
 

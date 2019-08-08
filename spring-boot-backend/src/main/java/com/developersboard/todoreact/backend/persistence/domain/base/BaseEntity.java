@@ -4,15 +4,15 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Version;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
  * This class is to allow an entity to inherit properties from a it.
@@ -23,28 +23,26 @@ import org.springframework.data.annotation.LastModifiedDate;
  */
 @Data
 @MappedSuperclass
-@EqualsAndHashCode(of = {"version"})
-@JsonIgnoreProperties({"createdAt", "updatedAt", "version"})
+@EntityListeners(AuditingEntityListener.class)
+@JsonIgnoreProperties({"createdAt", "createdBy", "updatedAt", "updatedBy"})
 public class BaseEntity {
 
   /**
-   * Manages the version of Entities to measure the amount of
-   * modifications made to this entity.
+   * Records who updated an Entity by saving username.
    */
-  @Version
-  private int version;
-
-  /**
-   * Keeps record of when an Entity wss created.
-   */
-  @CreatedDate
-  @CreationTimestamp
-  private LocalDateTime createdAt;
+  @CreatedBy
+  private String createdBy;
 
   /**
    * Keeps record of when the item was last Modified.
    */
-  @LastModifiedDate
   @UpdateTimestamp
+  @LastModifiedDate
   private LocalDateTime updatedAt;
+
+  /**
+   * Manages the timestamps for each update made to an Entity.
+   */
+  @LastModifiedBy
+  private String updatedBy;
 }
