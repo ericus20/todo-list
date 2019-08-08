@@ -50,14 +50,11 @@ class TodoResourceTest {
 
   @Test
   void createTodo(TestInfo testInfo) throws Exception {
-    Todo todo = new Todo(testInfo.getDisplayName());
-    String json = new Gson().toJson(todo);
-
     this.mockMvc
             .perform(MockMvcRequestBuilders
                     .post(BASE_URL)
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(json))
+                    .content(getTodoAsJson(testInfo.getDisplayName(), null)))
             .andExpect(MockMvcResultMatchers.status().isCreated())
             .andExpect(MockMvcResultMatchers.header().string("location",
                     Matchers.containsString(BASE_URL)));
@@ -65,42 +62,31 @@ class TodoResourceTest {
 
   @Test
   void createTodoOnEmptyName() {
-    Todo todo = new Todo();
-    String json = new Gson().toJson(todo);
     Assertions.assertThrows(Exception.class, () -> this.mockMvc.perform(MockMvcRequestBuilders
             .post(BASE_URL)
             .contentType(MediaType.APPLICATION_JSON)
-            .content(json)));
+            .content(getTodoAsJson("", null))));
   }
 
   @Test
   void updateTodo(TestInfo testInfo) throws Exception {
     fetchTodoById(MockMvcResultMatchers.jsonPath("$.name").value("Buy Milk"));
-
-    Todo todo = new Todo(testInfo.getDisplayName());
-    todo.setId(1L);
-    Gson gson = new Gson();
-    String json = gson.toJson(todo);
-
     MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
             .put(BASE_URL)
             .contentType(MediaType.APPLICATION_JSON)
-            .content(json);
+            .content(getTodoAsJson(testInfo.getDisplayName(), 1L));
     this.mockMvc
             .perform(requestBuilder)
             .andExpect(MockMvcResultMatchers.status().isOk());
-
     fetchTodoById(MockMvcResultMatchers.jsonPath("$.name").value(testInfo.getDisplayName()));
   }
 
   @Test
   void updateTodoOnEmptyTodo() {
-    Todo todo = new Todo();
-    String json = new Gson().toJson(todo);
     Assertions.assertThrows(Exception.class, () -> this.mockMvc.perform(MockMvcRequestBuilders
             .put(BASE_URL)
             .contentType(MediaType.APPLICATION_JSON)
-            .content(json)));
+            .content(getTodoAsJson("", null))));
   }
 
   @Test
@@ -109,7 +95,6 @@ class TodoResourceTest {
             .perform(MockMvcRequestBuilders.delete(BASE_URL + "/1"))
             .andDo(MockMvcResultHandlers.print())
             .andExpect(MockMvcResultMatchers.status().isOk());
-
     this.mockMvc
             .perform(MockMvcRequestBuilders.get(BASE_URL + "/" + 1))
             .andDo(MockMvcResultHandlers.print())
@@ -122,5 +107,11 @@ class TodoResourceTest {
             .andDo(MockMvcResultHandlers.print())
             .andExpect(exists)
             .andExpect(MockMvcResultMatchers.status().isOk());
+  }
+
+  private String getTodoAsJson(String name, Long id) {
+    Todo todo = new Todo(name);
+    todo.setId(id);
+    return  new Gson().toJson(todo);
   }
 }
