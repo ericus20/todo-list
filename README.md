@@ -27,8 +27,8 @@ for details on our code of conduct, and the process for submitting pull requests
 
 ## Notes
 
-* Start Spring Boot application first - *./gradlew bootRun*
-* Start React application - *npm start*
+* Start Spring Boot application first by changing directory into spring-boot-backend then - **./gradlew bootRun**
+* Start React application by changing directory into react-frontend then - **npm install** then **npm start**
 * Access application on - *http://localhost:3000/*
 * Access Spring Boot Backend Restful Service on *http://localhost:8080/api/v1/todos*
 * Access in-memory database on *http://localhost:8080/h2-console*
