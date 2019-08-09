@@ -8,8 +8,10 @@ import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -26,6 +28,13 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties({"createdAt", "createdBy", "updatedAt", "updatedBy"})
 public class BaseEntity {
+
+  /**
+   * Keeps record of when an Entity wss created.
+   */
+  @CreatedDate
+  @CreationTimestamp
+  private LocalDateTime createdAt;
 
   /**
    * Records who updated an Entity by saving username.

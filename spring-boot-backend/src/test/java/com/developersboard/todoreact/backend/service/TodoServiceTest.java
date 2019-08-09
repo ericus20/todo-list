@@ -89,10 +89,15 @@ class TodoServiceTest {
 
   private Todo createAndVerifyTodoItem(TestInfo testInfo) {
     Todo todo = new Todo(testInfo.getDisplayName(), LocalDate.now().plusDays(2));
+    System.out.println(todo.toString());
     Todo savedTodo = todoService.saveOrUpdate(todo);
     Assertions.assertAll("Todo creation should succeed and return valid object", () -> {
       Assertions.assertNotNull(savedTodo);
       Assertions.assertNotNull(savedTodo.getId());
+      Assertions.assertNotNull(savedTodo.getCreatedAt());
+      Assertions.assertNotNull(savedTodo.getCreatedBy());
+      Assertions.assertNotNull(savedTodo.getUpdatedAt());
+      Assertions.assertNotNull(savedTodo.getUpdatedBy());
     });
     return todo;
   }
