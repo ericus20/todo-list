@@ -6,10 +6,9 @@ WORKDIR /app
 # add `/app/node_modules/.bin` to $PATH
 ENV PATH /app/node_modules/.bin:$PATH
 
-# Install some dependencies
-COPY ./package.json ./
-RUN npm install --loglevel=error
-COPY ./ ./
+# install and cache app dependencies
+COPY package.json /app/package.json
+RUN npm install --silent
 
 #Default command
-CMD ["npm", "run", "start-docker"]
+CMD ["npm", "start"]

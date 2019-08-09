@@ -15,7 +15,6 @@
     "typescript": "^3.5.3"
   },
   "scripts": {
-    "start-docker": "CHOKIDAR_USEPOLLING=true react-scripts start",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
