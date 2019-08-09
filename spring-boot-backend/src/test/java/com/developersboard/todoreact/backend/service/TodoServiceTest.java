@@ -1,6 +1,7 @@
 package com.developersboard.todoreact.backend.service;
 
 import com.developersboard.todoreact.backend.persistence.domain.Todo;
+import com.developersboard.todoreact.exception.TodoResourceUnavailableException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -11,8 +12,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
+@ActiveProfiles(value = {"test"})
 class TodoServiceTest {
 
   @Autowired
@@ -59,6 +62,13 @@ class TodoServiceTest {
     allTodoItems.forEach(list::add);
 
     Assertions.assertTrue(list.contains(todo));
+  }
+
+  @Test
+  void getAllTodoItemsOnEmpty() {
+    todoService.deleteAllTodos();
+    Assertions.assertThrows(TodoResourceUnavailableException.class, () ->
+          todoService.getAllTodoItems(), "Calling get all on empty should throw exception");
   }
 
   @Test

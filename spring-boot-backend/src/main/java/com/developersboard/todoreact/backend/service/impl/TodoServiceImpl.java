@@ -3,9 +3,9 @@ package com.developersboard.todoreact.backend.service.impl;
 import com.developersboard.todoreact.backend.persistence.domain.Todo;
 import com.developersboard.todoreact.backend.persistence.repository.TodoRepository;
 import com.developersboard.todoreact.backend.service.TodoService;
+import com.developersboard.todoreact.exception.TodoResourceUnavailableException;
 
 import java.time.LocalDate;
-import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,19 +39,28 @@ public class TodoServiceImpl implements TodoService {
   }
 
   @Override
-  public Iterable<Todo> getAllTodoItems() {
-    return todoRepository.findAll();
+  public Iterable<Todo> getAllTodoItems() throws TodoResourceUnavailableException {
+    Iterable<Todo> todos = todoRepository.findAll();
+    if (todos.spliterator().getExactSizeIfKnown() == 0) {
+      throw new TodoResourceUnavailableException("There are no todos available");
+    }
+    return todos;
   }
 
   @Override
   public Todo getTodoById(Long id) {
-    // TODO: 7/30/2019 Create custom exception for Todo Object
-    return todoRepository.findById(id).orElseThrow(NoSuchElementException::new);
+    return todoRepository.findById(id).orElseThrow(TodoResourceUnavailableException::new);
   }
 
   @Override
   @Transactional
   public void deleteTodoById(Long id) {
     todoRepository.deleteById(id);
+  }
+
+  @Override
+  @Transactional
+  public void deleteAllTodos() {
+    todoRepository.deleteAll();
   }
 }

@@ -8,7 +8,7 @@ class TodoReactApplicationTests {
 
   @Test
   void contextLoads() {
-    TodoReactApplication.main(new String[] {});
+    TodoReactApplication.main(new String[]{});
   }
 
 }
