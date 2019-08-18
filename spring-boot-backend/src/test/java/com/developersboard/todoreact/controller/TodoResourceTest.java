@@ -90,7 +90,7 @@ class TodoResourceTest {
 
   @Test
   void deleteAllTodos() throws Exception {
-    deleteTodo(MockMvcRequestBuilders.delete(BASE_URL), MockMvcResultMatchers.status().isOk());
+    perform(MockMvcRequestBuilders.delete(BASE_URL), MockMvcResultMatchers.status().isOk());
     fetchTodo(BASE_URL, MockMvcResultMatchers.status().isNotFound());
   }
 
@@ -106,7 +106,7 @@ class TodoResourceTest {
             .value("Todo item name is required"));
   }
 
-  private void deleteTodo(MockHttpServletRequestBuilder del, ResultMatcher ok) throws Exception {
+  private void perform(MockHttpServletRequestBuilder del, ResultMatcher ok) throws Exception {
     this.mockMvc
             .perform(del)
             .andDo(MockMvcResultHandlers.print())
@@ -114,7 +114,7 @@ class TodoResourceTest {
   }
 
   private void fetchTodo(String baseUrl, ResultMatcher ok) throws Exception {
-    deleteTodo(MockMvcRequestBuilders.get(baseUrl), ok);
+    perform(MockMvcRequestBuilders.get(baseUrl), ok);
   }
 
   private void fetchTodoById(ResultMatcher exists, MvcResult result) throws Exception {
