@@ -1,0 +1,114 @@
+import com.github.spotbugs.SpotBugsTask
+
+plugins {
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'org.springframework.boot' version '2.1.8.RELEASE'
+    id 'com.github.spotbugs' version '1.6.9'
+    id 'checkstyle'
+    id 'eclipse'
+    id 'jacoco'
+    id 'java'
+    id 'idea'
+    id 'pmd'
+}
+
+group = 'com.developersboard'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '12'
+targetCompatibility = '12'
+
+configurations {
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    set('springCloudVersion', "Greenwich.SR2")
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'mysql:mysql-connector-java'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.projectlombok:lombok'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+// Gradle wrapper will be supported adn provided if no Gradle is found locally
+wrapper {
+    gradleVersion = '5.6.2'
+}
+
+// Checkstyle task to disable xml reports and load config file
+tasks.withType(Checkstyle) {
+    configFile file("${project.rootDir}/config/checkstyle.xml")
+    include '**/*.java'
+    exclude '**/gen/**'
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+
+    classpath = files()
+}
+
+spotbugs {
+    toolVersion = '3.1.12'
+    sourceSets = [sourceSets.main]
+    ignoreFailures = true
+    effort = "max"
+    showProgress = true
+    reportLevel = "high"
+    visitors = ["FindSqlInjection", "SwitchFallthrough"]
+    omitVisitors = ["FindNonShortCircuit"]
+    includeFilter = file("$rootProject.projectDir/config/spotbugs.xml")
+}
+
+tasks.withType(SpotBugsTask) {
+    reports {
+        xml.enabled = true
+    }
+}
+
+pmd {
+    ignoreFailures = true
+    toolVersion = '6.0.1'
+    sourceSets = [sourceSets.main, sourceSets.test]
+    ruleSetFiles = files("$rootProject.projectDir/config/pmd-ruleset.xml")
+    ruleSets = []
+}
+
+tasks.withType(Pmd) {
+    reports {
+        xml.enabled = true
+    }
+}
+
+jacocoTestReport {
+    sourceSets sourceSets.main
+    reports {
+        xml.enabled = true
+    }
+}
+
+tasks.build.dependsOn(jacocoTestReport)

@@ -1,0 +1,51 @@
+version: '3.7'
+
+services:
+
+  # Database Service (Mysql)
+  database:
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=todo_list
+      - MYSQL_USER=todo-list
+      - MYSQL_PASSWORD=todo-list
+    ports:
+      - "3306:3306"
+    restart: always
+
+  # App backend service
+  todo-list-backend:
+    image: ericus20/todo-list-backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    restart: always
+    depends_on:
+      - database
+    environment:
+      - DATABASE_HOST=database
+      - DATABASE_USER=todo-list
+      - DATABASE_NAME=todo-list
+      - DATABASE_PORT=3306
+      - SPRING_PROFILES_ACTIVE=docker
+    
+  # React Frontend Service
+  react-frontend:
+    image: ericus20/react-frontend
+    build:
+        context: ./react-frontend
+        dockerfile: Dockerfile
+    ports:
+        - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+        - './react-frontend:/app'
+        - '/app/node_modules'
+    restart: always
+    depends_on:
+        - todo-list-backend
