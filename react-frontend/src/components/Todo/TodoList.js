@@ -48,7 +48,10 @@ class TodoList extends Component {
           id={todo.id}
           name={todo.name}
           dueDate={todo.dueDate}
+          version={todo.version}
           completed={todo.completed}
+          createdAt={todo.createdAt}
+          createdBy={todo.createdBy}
           labelClass={dueDateLabelClass}
           refresh={this.refreshListToRemove}
         />

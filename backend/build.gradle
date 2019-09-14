@@ -50,6 +50,10 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
 }
 
+bootRun {
+    bootRun.systemProperty 'spring.profiles.active', 'dev'
+}
+
 test {
     useJUnitPlatform()
 }

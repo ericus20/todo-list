@@ -44,7 +44,10 @@ class TodoListItem extends Component {
       id: this.state.id,
       name: this.state.name,
       dueDate: this.state.dueDate,
-      completed: this.state.completed
+      completed: this.state.completed,
+      createdAt: this.props.createdAt,
+      createdBy: this.props.createdBy,
+      version: this.props.version
     };
 
     AxiosUtil.put("/", todo)
